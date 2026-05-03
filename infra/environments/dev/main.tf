@@ -23,3 +23,9 @@ module "eks" {
   cluster_role_arn = module.iam.eks_cluster_role_arn
   node_role_arn    = module.iam.eks_node_role_arn
 }
+
+module "ecr" {
+  source = "../../modules/ecr"
+
+  repository_name = var.ecr_repository_name
+}
