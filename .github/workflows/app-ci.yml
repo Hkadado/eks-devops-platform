@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "app/**"
-      - ".github/workflows/app-ci.yml"
+  workflow_dispatch:
 
 permissions:
   id-token: write
