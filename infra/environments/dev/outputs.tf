@@ -17,3 +17,7 @@ output "cluster_name" {
 output "ecr_repository_url" {
   value = module.ecr.repository_url
 }
+
+output "external_dns_role_arn" {
+  value = module.external_dns.external_dns_role_arn
+}

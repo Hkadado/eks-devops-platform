@@ -3,11 +3,17 @@ kind: Ingress
 metadata:
   name: eks-app-ingress
   annotations:
-    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/hostname: eks.hasankadado.com
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - eks.hasankadado.com
+      secretName: eks-app-tls
   rules:
-    - http:
+    - host: eks.hasankadado.com
+      http:
         paths:
           - path: /
             pathType: Prefix

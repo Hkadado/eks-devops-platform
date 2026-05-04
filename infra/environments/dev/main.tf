@@ -24,6 +24,13 @@ module "eks" {
   node_role_arn    = module.iam.eks_node_role_arn
 }
 
+module "external_dns" {
+  source = "../../modules/external-dns"
+
+  project_name = var.project_name
+  cluster_name = module.eks.cluster_name
+}
+
 module "ecr" {
   source = "../../modules/ecr"
 
