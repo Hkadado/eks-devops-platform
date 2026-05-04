@@ -37,3 +37,11 @@ variable "ecr_repository_name" {
   description = "ECR repository name for the app"
   type        = string
 }
+
+variable "github_owner" {
+  type = string
+}
+
+variable "github_repo" {
+  type = string
+}

@@ -24,15 +24,24 @@ module "eks" {
   node_role_arn    = module.iam.eks_node_role_arn
 }
 
-module "external_dns" {
-  source = "../../modules/external-dns"
+# module "external_dns" {
+#   source = "../../modules/external-dns"
 
-  project_name = var.project_name
-  cluster_name = module.eks.cluster_name
-}
+#   project_name = var.project_name
+#   cluster_name = module.eks.cluster_name
+# }
 
 module "ecr" {
   source = "../../modules/ecr"
 
   repository_name = var.ecr_repository_name
+}
+
+module "github_actions" {
+  source = "../../modules/github-actions"
+
+  project_name       = var.project_name
+  github_owner       = var.github_owner
+  github_repo        = var.github_repo
+  ecr_repository_arn = module.ecr.repository_arn
 }

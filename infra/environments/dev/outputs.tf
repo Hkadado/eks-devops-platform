@@ -18,6 +18,10 @@ output "ecr_repository_url" {
   value = module.ecr.repository_url
 }
 
-output "external_dns_role_arn" {
-  value = module.external_dns.external_dns_role_arn
+# output "external_dns_role_arn" {
+#   value = module.external_dns.external_dns_role_arn
+# }
+
+output "github_actions_role_arn" {
+  value = module.github_actions.github_actions_role_arn
 }
