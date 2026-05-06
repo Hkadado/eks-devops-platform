@@ -49,9 +49,7 @@ A production-style Kubernetes platform on AWS using Amazon EKS, designed to demo
 5. Trigger app pipeline (manual or via push) to build and push initial image
 
 ## Limitations/future work:
-- Add terraform to the github actions pipeline
-- Split CI/CD into separate workflows for application and infrastructure changes, triggered by path filters.
-- Add prevent_destroy lifecycle rules to stateful resources (ECR repository) to prevent accidental deletion.
+- Separate Terraform into persistent state (ECR) and cluster state (VPC, EKS, IAM, etc.) so destroy operations on the cluster cannot affect persistent resources. Add prevent_destroy lifecycle rules as an additional safety layer on persistent resources.
 - Security scanning, Checkov for Terraform, Trivy for Docker image
 - Add monitoring stack (Prometheus + Grafana)
 - Replace bootstrap script with:
