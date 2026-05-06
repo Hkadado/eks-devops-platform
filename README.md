@@ -49,11 +49,11 @@ A production-style Kubernetes platform on AWS using Amazon EKS, designed to demo
 5. Trigger app pipeline (manual or via push) to build and push initial image
 
 ## Limitations/future work:
-- Separate Terraform into persistent state (ECR) and cluster state (VPC, EKS, IAM, etc.) so destroy operations on the cluster cannot affect persistent resources. Add prevent_destroy lifecycle rules as an additional safety layer on persistent resources.
-- Security scanning, Checkov for Terraform, Trivy for Docker image
 - Add monitoring stack (Prometheus + Grafana)
 - Replace bootstrap script with:
     - Terraform-managed Argo CD installation
     - Argo CD managing all platform components (Ingress, cert-manager, ExternalDNS)
 - Add ArgoCD Image Updater to automatically update deployment manifests when new images are pushed to ECR. 
 - Switch image tags from latest to commit-SHA so updates are detected and rollouts are deterministic
+- Separate Terraform into persistent state (ECR) and cluster state (VPC, EKS, IAM, etc.) so destroy operations on the cluster cannot affect persistent resources. Add prevent_destroy lifecycle rules as an additional safety layer on persistent resources.
+    - For multi-engineer teams or environments with non-reproducible persistent state (databases, user data), separate Terraform into persistent/ and cluster/ state files. Not currently necessary in this single-developer setup since the only persistent resource (ECR) holds reproducible artifacts that can be rebuilt by re-triggering the app pipeline.
