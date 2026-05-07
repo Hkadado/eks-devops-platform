@@ -1,4 +1,5 @@
-resource "aws_iam_policy" "external_dns" {
+resource "aws_iam_policy" "external_dns" { 
+  # checkov:skip=CKV_AWS_355: route53:ListHostedZones and route53:ListResourceRecordSets do not support resource-level permissions per AWS docs
   name = "${var.project_name}-external-dns-policy"
 
   policy = jsonencode({

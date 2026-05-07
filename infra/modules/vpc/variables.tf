@@ -22,3 +22,8 @@ variable "private_subnet_cidrs" {
   description = "CIDR blocks for private subnets"
   type        = list(string)
 }
+
+variable "cluster_name" {
+  description = "EKS cluster name, used for Kubernetes subnet discovery tags"
+  type        = string
+}

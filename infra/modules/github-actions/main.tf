@@ -44,6 +44,7 @@ resource "aws_iam_role" "github_actions" {
 }
 
 resource "aws_iam_policy" "ecr_push" {
+    # checkov:skip=CKV_AWS_355: ecr:GetAuthorizationToken does not support resource-level permissions and requires Resource "*"
   name = "${var.project_name}-ecr-push-policy"
 
   policy = jsonencode({
@@ -78,6 +79,7 @@ resource "aws_iam_role_policy_attachment" "github_actions_ecr_push" {
 }
 
 resource "aws_iam_role_policy_attachment" "github_actions_admin" {
+  # checkov:skip=CKV_AWS_274: Personal learning project. Risk accepted with mitigations: OIDC trust scoped to repo+main branch only, GitHub MFA enabled, AWS budget alerts configured. Will scope to PowerUser+IAM when project moves beyond learning phase.
   role       = aws_iam_role.github_actions.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }

@@ -1,11 +1,33 @@
+resource "aws_cloudwatch_log_group" "eks" {
+  name              = "/aws/eks/${var.cluster_name}/cluster"
+  retention_in_days = 30
+
+  tags = {
+    Name = "${var.cluster_name}-eks-logs"
+  }
+}
+
 resource "aws_eks_cluster" "main" {
+  # checkov:skip=CKV_AWS_58: KMS secrets encryption not configured for personal project; default etcd encryption sufficient at this scope
+  # checkov:skip=CKV_AWS_38: Public endpoint required for kubectl access from local machine; protected by IAM and RBAC. Personal project.
+  # checkov:skip=CKV_AWS_39: Same as above. Disabling public endpoint would require VPN/bastion infrastructure not justified at this scope.
   name     = var.cluster_name
   role_arn = var.cluster_role_arn
   version  = "1.33"
 
+  enabled_cluster_log_types = [
+    "api",
+    "audit",
+    "authenticator",
+    "controllerManager",
+    "scheduler",
+  ]
+
   vpc_config {
     subnet_ids = var.subnet_ids
   }
+
+  depends_on = [aws_cloudwatch_log_group.eks]
 
   tags = {
     Name = var.cluster_name

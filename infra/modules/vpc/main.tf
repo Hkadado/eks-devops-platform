@@ -7,6 +7,7 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "public" {
+  # checkov:skip=CKV_AWS_130: Public subnets intentionally auto-assign public IPs for AWS load balancers (ingress-nginx NLB)
   count = length(var.public_subnet_cidrs)
 
   vpc_id            = aws_vpc.main.id
@@ -17,6 +18,8 @@ resource "aws_subnet" "public" {
 
   tags = {
     Name = "${var.project_name}-public-${count.index}"
+    "kubernetes.io/role/elb"                    = "1"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
 
@@ -29,6 +32,8 @@ resource "aws_subnet" "private" {
 
   tags = {
     Name = "${var.project_name}-private-${count.index}"
+    "kubernetes.io/role/internal-elb"           = "1"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
 
