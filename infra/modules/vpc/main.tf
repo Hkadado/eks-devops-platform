@@ -1,4 +1,5 @@
 resource "aws_vpc" "main" {
+  # checkov:skip=CKV2_AWS_11: VPC flow logs not justified at personal-project scope; storage and analysis costs exceed benefit
   cidr_block = var.vpc_cidr
 
   tags = {
@@ -104,4 +105,13 @@ resource "aws_route_table_association" "private" {
 
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.main.id
+
+  # No ingress or egress rules = deny all
+  tags = {
+    Name = "${var.project_name}-default-sg-locked"
+  }
 }

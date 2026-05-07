@@ -1,4 +1,6 @@
 resource "aws_cloudwatch_log_group" "eks" {
+  # checkov:skip=CKV_AWS_158: KMS encryption not justified at personal-project scope; CloudWatch default encryption sufficient
+  # checkov:skip=CKV_AWS_338: 30-day retention sufficient for debugging needs at personal-project scope; 1-year retention not required
   name              = "/aws/eks/${var.cluster_name}/cluster"
   retention_in_days = 30
 
