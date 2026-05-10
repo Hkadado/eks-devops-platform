@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: platform-bootstrap
+  name: cluster-issuer
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
 
   source:
     repoURL: https://github.com/Hkadado/eks-devops-platform.git
     targetRevision: main
-    path: gitops/apps
-    directory:
-      recurse: true
+    path: gitops/cert-manager-extras
 
   destination:
     server: https://kubernetes.default.svc
@@ -23,9 +23,8 @@ spec:
       selfHeal: true
     syncOptions:
       - ServerSideApply=true
-      - SkipDryRunOnMissingResource=true
     retry:
-      limit: 5
+      limit: 10
       backoff:
         duration: 30s
         factor: 2
