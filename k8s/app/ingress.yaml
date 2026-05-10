@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: eks-app-ingress
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-staging
     external-dns.alpha.kubernetes.io/hostname: eks.hasankadado.com
 spec:
   ingressClassName: nginx

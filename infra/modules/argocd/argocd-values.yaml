@@ -1,0 +1,20 @@
+# Argo CD Helm chart values
+# Full options: https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/values.yaml
+
+global:
+  domain: argocd.hasankadado.com
+
+configs:
+  params:
+    server.insecure: "true"
+
+server:
+  service:
+    type: ClusterIP
+
+dex:
+  enabled: false
+notifications:
+  enabled: false
+applicationSet:
+  enabled: false

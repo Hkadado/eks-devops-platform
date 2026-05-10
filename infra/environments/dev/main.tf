@@ -54,3 +54,11 @@ module "github_actions" {
   github_repo        = var.github_repo
   ecr_repository_arn = module.ecr.repository_arn
 }
+
+module "argocd" {
+  source = "../../modules/argocd"
+
+  depends_on = [
+    module.eks,
+  ]
+}
