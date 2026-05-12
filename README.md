@@ -50,9 +50,6 @@ A production-style Kubernetes platform on AWS using Amazon EKS, designed to demo
 
 ## Limitations/future work:
 - Add monitoring stack (Prometheus + Grafana)
-- Replace bootstrap script with:
-    - Terraform-managed Argo CD installation
-    - Argo CD managing all platform components (Ingress, cert-manager, ExternalDNS)
-- Add ArgoCD Image Updater to automatically update deployment manifests when new images are pushed to ECR. 
+- GitOps automation implemented via CI-driven manifest updates: the application build pipeline updates the deployment manifest with the new image SHA, which ArgoCD reconciles to the cluster. ArgoCD Image Updater was evaluated as an alternative but deemed unnecessary given the simpler CI-based pattern is sufficient for this project's scope.
 - Separate Terraform into persistent state (ECR) and cluster state (VPC, EKS, IAM, etc.) so destroy operations on the cluster cannot affect persistent resources. Add prevent_destroy lifecycle rules as an additional safety layer on persistent resources.
     - For multi-engineer teams or environments with non-reproducible persistent state (databases, user data), separate Terraform into persistent/ and cluster/ state files. Not currently necessary in this single-developer setup since the only persistent resource (ECR) holds reproducible artifacts that can be rebuilt by re-triggering the app pipeline.

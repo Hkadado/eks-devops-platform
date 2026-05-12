@@ -17,3 +17,10 @@ spec:
           image: 820242908024.dkr.ecr.us-east-1.amazonaws.com/eks-devops-platform-app:latest
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
