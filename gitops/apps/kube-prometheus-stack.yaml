@@ -11,15 +11,14 @@ spec:
     chart: kube-prometheus-stack
     targetRevision: 65.5.1
     helm:
+      skipCrds: false
       values: |
-        # Disable Alertmanager (not needed for monitoring-only use case)
+        crds:
+          enabled: true
         alertmanager:
           enabled: false
-
-        # Prometheus configuration
         prometheus:
           prometheusSpec:
-            # Lower resource footprint for a small cluster
             resources:
               requests:
                 cpu: 200m
@@ -27,13 +26,9 @@ spec:
               limits:
                 cpu: 1000m
                 memory: 1Gi
-            # Retain 7 days of metrics in memory (default is 10d, smaller for ephemeral storage)
             retention: 7d
-            # Watch all namespaces for ServiceMonitors and PodMonitors
             serviceMonitorSelectorNilUsesHelmValues: false
             podMonitorSelectorNilUsesHelmValues: false
-
-        # Grafana configuration
         grafana:
           enabled: true
           adminPassword: prom-operator
@@ -44,14 +39,9 @@ spec:
             limits:
               cpu: 500m
               memory: 256Mi
-          # Default dashboards (cluster, nodes, pods, etc.)
           defaultDashboardsEnabled: true
-
-        # Node-level metrics (CPU, memory, disk, network per node)
         nodeExporter:
           enabled: true
-
-        # Kubernetes resource metrics (Deployments, Pods, ReplicaSets, etc.)
         kube-state-metrics:
           enabled: true
 
@@ -65,4 +55,6 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=trueh
+      - ServerSideApply=true
+      - Replace=true
+      - ApplyOutOfSyncOnly=true
