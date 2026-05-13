@@ -1,0 +1,68 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 65.5.1
+    helm:
+      values: |
+        # Disable Alertmanager (not needed for monitoring-only use case)
+        alertmanager:
+          enabled: false
+
+        # Prometheus configuration
+        prometheus:
+          prometheusSpec:
+            # Lower resource footprint for a small cluster
+            resources:
+              requests:
+                cpu: 200m
+                memory: 512Mi
+              limits:
+                cpu: 1000m
+                memory: 1Gi
+            # Retain 7 days of metrics in memory (default is 10d, smaller for ephemeral storage)
+            retention: 7d
+            # Watch all namespaces for ServiceMonitors and PodMonitors
+            serviceMonitorSelectorNilUsesHelmValues: false
+            podMonitorSelectorNilUsesHelmValues: false
+
+        # Grafana configuration
+        grafana:
+          enabled: true
+          adminPassword: prom-operator
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          # Default dashboards (cluster, nodes, pods, etc.)
+          defaultDashboardsEnabled: true
+
+        # Node-level metrics (CPU, memory, disk, network per node)
+        nodeExporter:
+          enabled: true
+
+        # Kubernetes resource metrics (Deployments, Pods, ReplicaSets, etc.)
+        kube-state-metrics:
+          enabled: true
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
