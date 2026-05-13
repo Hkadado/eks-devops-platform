@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: eks-app
-          image: 820242908024.dkr.ecr.us-east-1.amazonaws.com/eks-devops-platform-app:34e254ed4ebd540b725805f6f401f17754c620a9
+          image: 820242908024.dkr.ecr.us-east-1.amazonaws.com/eks-devops-platform-app:c870f8743ceee2d1d4bfdfc2479434085df3839c
           ports:
             - containerPort: 3000
           resources:
