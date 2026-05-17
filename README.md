@@ -43,6 +43,9 @@ EKS Cluster
     └── eks-app - the application (managed by Argo CD)
 ```
 
+## Architecture Diagram
+![Architecture Diagram](docs/architecture.png)
+
 ## Workflows
 
 ### Application changes (the common case)
